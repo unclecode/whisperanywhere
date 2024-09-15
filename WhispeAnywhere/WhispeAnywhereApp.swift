@@ -1,17 +1,12 @@
-//
-//  WhispeAnywhereApp.swift
-//  WhispeAnywhere
-//
-//  Created by Unclecode on 15/09/2024.
-//
-
 import SwiftUI
 
 @main
-struct WhispeAnywhereApp: App {
+struct WhisperAnywhereApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     var body: some Scene {
-        WindowGroup {
-            ContentView()
+        Settings {
+            EmptyView()
         }
     }
 }

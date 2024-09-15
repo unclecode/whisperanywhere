@@ -7,19 +7,43 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E3927F372C96B39800661FEB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3927F362C96B39800661FEB /* AVFoundation.framework */; };
+		E3927F3A2C96C7A500661FEB /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E3927F382C96B3C500661FEB /* Info.plist */; };
+		E3927F3D2C96CC5C00661FEB /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3927F3C2C96CC5C00661FEB /* SettingsStore.swift */; };
+		E3927F3F2C96E11000661FEB /* AppDelegateHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3927F3E2C96E11000661FEB /* AppDelegateHelpers.swift */; };
 		E3970C632C96A06700E3689D /* WhispeAnywhereApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3970C622C96A06700E3689D /* WhispeAnywhereApp.swift */; };
 		E3970C652C96A06700E3689D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3970C642C96A06700E3689D /* ContentView.swift */; };
 		E3970C672C96A06800E3689D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E3970C662C96A06800E3689D /* Assets.xcassets */; };
 		E3970C6A2C96A06800E3689D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E3970C692C96A06800E3689D /* Preview Assets.xcassets */; };
+		E3970C722C96A0F500E3689D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3970C712C96A0F500E3689D /* AppDelegate.swift */; };
+		E3970C742C96A10200E3689D /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3970C732C96A10200E3689D /* StatusBarController.swift */; };
+		E3970C762C96A10F00E3689D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3970C752C96A10F00E3689D /* SettingsView.swift */; };
+		E3970C782C96A11800E3689D /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3970C772C96A11800E3689D /* AudioRecorder.swift */; };
+		E3970C7A2C96A12100E3689D /* OverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3970C792C96A12100E3689D /* OverlayWindow.swift */; };
+		E3970C7C2C96A12C00E3689D /* HotkeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3970C7B2C96A12C00E3689D /* HotkeyManager.swift */; };
+		E3970C7E2C96A13700E3689D /* GroqAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3970C7D2C96A13700E3689D /* GroqAPI.swift */; };
+		E3970C802C96A52200E3689D /* ClipboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3970C7F2C96A52200E3689D /* ClipboardManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E3927F362C96B39800661FEB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		E3927F382C96B3C500661FEB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E3927F3C2C96CC5C00661FEB /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
+		E3927F3E2C96E11000661FEB /* AppDelegateHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegateHelpers.swift; sourceTree = "<group>"; };
 		E3970C5F2C96A06700E3689D /* WhispeAnywhere.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhispeAnywhere.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3970C622C96A06700E3689D /* WhispeAnywhereApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhispeAnywhereApp.swift; sourceTree = "<group>"; };
 		E3970C642C96A06700E3689D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		E3970C662C96A06800E3689D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E3970C692C96A06800E3689D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		E3970C6B2C96A06800E3689D /* WhispeAnywhere.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WhispeAnywhere.entitlements; sourceTree = "<group>"; };
+		E3970C712C96A0F500E3689D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		E3970C732C96A10200E3689D /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
+		E3970C752C96A10F00E3689D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		E3970C772C96A11800E3689D /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
+		E3970C792C96A12100E3689D /* OverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindow.swift; sourceTree = "<group>"; };
+		E3970C7B2C96A12C00E3689D /* HotkeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyManager.swift; sourceTree = "<group>"; };
+		E3970C7D2C96A13700E3689D /* GroqAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroqAPI.swift; sourceTree = "<group>"; };
+		E3970C7F2C96A52200E3689D /* ClipboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,17 +51,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3927F372C96B39800661FEB /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E3927F352C96B39800661FEB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E3927F362C96B39800661FEB /* AVFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E3970C562C96A06700E3689D = {
 			isa = PBXGroup;
 			children = (
 				E3970C612C96A06700E3689D /* WhispeAnywhere */,
 				E3970C602C96A06700E3689D /* Products */,
+				E3927F352C96B39800661FEB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,6 +91,17 @@
 				E3970C662C96A06800E3689D /* Assets.xcassets */,
 				E3970C6B2C96A06800E3689D /* WhispeAnywhere.entitlements */,
 				E3970C682C96A06800E3689D /* Preview Content */,
+				E3970C712C96A0F500E3689D /* AppDelegate.swift */,
+				E3970C732C96A10200E3689D /* StatusBarController.swift */,
+				E3970C752C96A10F00E3689D /* SettingsView.swift */,
+				E3970C792C96A12100E3689D /* OverlayWindow.swift */,
+				E3970C772C96A11800E3689D /* AudioRecorder.swift */,
+				E3970C7B2C96A12C00E3689D /* HotkeyManager.swift */,
+				E3970C7D2C96A13700E3689D /* GroqAPI.swift */,
+				E3970C7F2C96A52200E3689D /* ClipboardManager.swift */,
+				E3927F382C96B3C500661FEB /* Info.plist */,
+				E3927F3C2C96CC5C00661FEB /* SettingsStore.swift */,
+				E3927F3E2C96E11000661FEB /* AppDelegateHelpers.swift */,
 			);
 			path = WhispeAnywhere;
 			sourceTree = "<group>";
@@ -127,6 +172,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3927F3A2C96C7A500661FEB /* Info.plist in Resources */,
 				E3970C6A2C96A06800E3689D /* Preview Assets.xcassets in Resources */,
 				E3970C672C96A06800E3689D /* Assets.xcassets in Resources */,
 			);
@@ -139,8 +185,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3970C802C96A52200E3689D /* ClipboardManager.swift in Sources */,
+				E3970C782C96A11800E3689D /* AudioRecorder.swift in Sources */,
+				E3927F3F2C96E11000661FEB /* AppDelegateHelpers.swift in Sources */,
+				E3970C7A2C96A12100E3689D /* OverlayWindow.swift in Sources */,
+				E3970C7E2C96A13700E3689D /* GroqAPI.swift in Sources */,
+				E3970C762C96A10F00E3689D /* SettingsView.swift in Sources */,
 				E3970C652C96A06700E3689D /* ContentView.swift in Sources */,
+				E3970C742C96A10200E3689D /* StatusBarController.swift in Sources */,
+				E3970C7C2C96A12C00E3689D /* HotkeyManager.swift in Sources */,
+				E3970C722C96A0F500E3689D /* AppDelegate.swift in Sources */,
 				E3970C632C96A06700E3689D /* WhispeAnywhereApp.swift in Sources */,
+				E3927F3D2C96CC5C00661FEB /* SettingsStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,11 +335,13 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = /Users/unclecode/devs/whisperanywhere/WhispeAnywhere/WhispeAnywhere/info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.unclecode.WhispeAnywhere;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -306,11 +364,13 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = /Users/unclecode/devs/whisperanywhere/WhispeAnywhere/WhispeAnywhere/info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.unclecode.WhispeAnywhere;
 				PRODUCT_NAME = "$(TARGET_NAME)";
