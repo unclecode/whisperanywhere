@@ -14,6 +14,7 @@
 		E3927F422C97240200661FEB /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3927F412C97240200661FEB /* Logger.swift */; };
 		E3927F442C97270B00661FEB /* LogViewerWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3927F432C97270B00661FEB /* LogViewerWindow.swift */; };
 		E3927F462C98035F00661FEB /* SpotlightChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3927F452C98035F00661FEB /* SpotlightChatView.swift */; };
+		E3927F492C981CC300661FEB /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = E3927F482C981CC300661FEB /* MarkdownUI */; };
 		E3970C632C96A06700E3689D /* WhispeAnywhereApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3970C622C96A06700E3689D /* WhispeAnywhereApp.swift */; };
 		E3970C652C96A06700E3689D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3970C642C96A06700E3689D /* ContentView.swift */; };
 		E3970C672C96A06800E3689D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E3970C662C96A06800E3689D /* Assets.xcassets */; };
@@ -58,6 +59,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E3927F372C96B39800661FEB /* AVFoundation.framework in Frameworks */,
+				E3927F492C981CC300661FEB /* MarkdownUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,6 +141,9 @@
 			dependencies = (
 			);
 			name = WhispeAnywhere;
+			packageProductDependencies = (
+				E3927F482C981CC300661FEB /* MarkdownUI */,
+			);
 			productName = WhispeAnywhere;
 			productReference = E3970C5F2C96A06700E3689D /* WhispeAnywhere.app */;
 			productType = "com.apple.product-type.application";
@@ -167,6 +172,9 @@
 				Base,
 			);
 			mainGroup = E3970C562C96A06700E3689D;
+			packageReferences = (
+				E3927F472C981CC300661FEB /* XCRemoteSwiftPackageReference "MarkdownUI" */,
+			);
 			productRefGroup = E3970C602C96A06700E3689D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -413,6 +421,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E3927F472C981CC300661FEB /* XCRemoteSwiftPackageReference "MarkdownUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/gonzalezreal/MarkdownUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.4.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E3927F482C981CC300661FEB /* MarkdownUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E3927F472C981CC300661FEB /* XCRemoteSwiftPackageReference "MarkdownUI" */;
+			productName = MarkdownUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E3970C572C96A06700E3689D /* Project object */;
 }

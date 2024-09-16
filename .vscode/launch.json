@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:WhispeAnywhere}",
+            "name": "Debug WhispeAnywhere",
+            "program": "${workspaceFolder:WhispeAnywhere}/.build/debug/WhispeAnywhere",
+            "preLaunchTask": "swift: Build Debug WhispeAnywhere"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:WhispeAnywhere}",
+            "name": "Release WhispeAnywhere",
+            "program": "${workspaceFolder:WhispeAnywhere}/.build/release/WhispeAnywhere",
+            "preLaunchTask": "swift: Build Release WhispeAnywhere"
+        }
+    ]
+}

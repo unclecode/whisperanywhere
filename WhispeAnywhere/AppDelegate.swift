@@ -14,6 +14,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, HotkeyManagerDelegate {
     var overlayUpdateTimer: Timer?
     private var logViewerWindow: LogViewerWindow?
     
+    var spotlightChatWindow: NSWindow?
+    @Published var isSpotlightChatVisible = false
+    
     @AppStorage("selectedModel") var selectedModel = "Groq"
     @AppStorage("groqAPIKey") var groqAPIKey = ""
     @AppStorage("hotkey") var hotkey = "Cmd+Shift+K"
@@ -43,6 +46,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, HotkeyManagerDelegate {
         setupAudioRecorder()
         setupOverlayWindow()
         setupGroqAPI()
+        setupSpotlightChat()
         startOverlayUpdateTimer()
     }
     
@@ -71,15 +75,63 @@ class AppDelegate: NSObject, NSApplicationDelegate, HotkeyManagerDelegate {
         logViewerWindow?.updateLogContent()
         logViewerWindow?.makeKeyAndOrderFront(nil)
     }
+    
+    
+    private func setupSpotlightChat() {
+        let contentView = SpotlightChatView(isVisible: Binding<Bool>(
+            get: { self.isSpotlightChatVisible },
+            set: { self.isSpotlightChatVisible = $0 }
+        ), groqAPI: self.groqAPI!)
+        
+            spotlightChatWindow = NSWindow(
+                contentRect: NSRect(x: 100, y: 100, width: 600, height: 400),
+                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+//                styleMask: [ .borderless],
+                backing: .buffered,
+                defer: false)
+        
+           // Make the window transparent and non-opaque
+           spotlightChatWindow?.backgroundColor = .clear
+           spotlightChatWindow?.isOpaque = false
+           
+           // Ensure the content view fills the entire window
+           spotlightChatWindow?.styleMask.insert(.fullSizeContentView)
+           
+           spotlightChatWindow?.center()
+           spotlightChatWindow?.setFrameAutosaveName("SpotlightChat")
+           spotlightChatWindow?.contentView = NSHostingView(rootView: contentView)
+           spotlightChatWindow?.isReleasedWhenClosed = false
+           spotlightChatWindow?.level = .floating
+        }
+        
+    private func toggleSpotlightChat() {
+        if isSpotlightChatVisible {
+            spotlightChatWindow?.close()
+            isSpotlightChatVisible = false
+        } else {
+            spotlightChatWindow?.makeKeyAndOrderFront(nil)
+            NSApp.activate(ignoringOtherApps: true)
+            
+            // Make sure the window and content get focus
+            spotlightChatWindow?.makeFirstResponder(spotlightChatWindow?.contentView)
+            
+            isSpotlightChatVisible = true
+        }
+    }
+    
     private func setupHotkey() {
-            Logger.log("Setting up hotkey...")
             hotkeyManager = HotkeyManager(settingsStore: settingsStore, delegate: self)
         }
-    
-    
-    func hotkeyTriggered() {
-            Logger.log("Hotkey triggered, toggling recording")
-            toggleRecording()
+        
+        func hotkeyTriggered(for action: String) {
+            switch action {
+            case "toggleRecording":
+                toggleRecording()
+            case "showSpotlightChat":
+                toggleSpotlightChat()
+            default:
+                break
+            }
         }
     
     

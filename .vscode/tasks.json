@@ -1,0 +1,24 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "xcodebuild -scheme WhispeAnywhere",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"],
+            "detail": "Build the Xcode project using xcodebuild"
+        },
+        {
+            "label": "run",
+            "type": "shell",
+            "command": "xcrun simctl launch booted com.yourcompany.WhispeAnywhere",  // Replace with the correct bundle identifier
+            "group": "none",
+            "problemMatcher": [],
+            "detail": "Run the Xcode project in the simulator"
+        }
+    ]
+}

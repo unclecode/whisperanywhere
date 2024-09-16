@@ -1,5 +1,6 @@
 import Cocoa
 import Carbon
+import Combine
 
 extension String {
     var fourCharCodeValue: Int {
@@ -17,55 +18,86 @@ extension String {
 }
 
 class HotkeyManager: ObservableObject {
-    private var hotKeyRef: EventHotKeyRef?
-    private var hotKeyID: EventHotKeyID
+    private var hotKeyRefs: [String: EventHotKeyRef] = [:]
+    private var hotKeyIDs: [String: EventHotKeyID] = [:]
     private weak var delegate: HotkeyManagerDelegate?
+    private var settingsStore: SettingsStore
+    private var cancellables = Set<AnyCancellable>()
+    private var eventHandlerInstalled = false
     
-    @Published var currentHotkey: String {
+    @Published var hotkeys: [String: String] {
         didSet {
-            print("Hotkey changed to: \(currentHotkey)")
-            updateHotkey()
+            print("Hotkeys changed: \(hotkeys)")
+            updateHotkeys()
         }
     }
     
     private static weak var sharedInstance: HotkeyManager?
     
     init(settingsStore: SettingsStore, delegate: HotkeyManagerDelegate) {
+        self.settingsStore = settingsStore
         self.delegate = delegate
-        self.currentHotkey = settingsStore.hotkey
-        self.hotKeyID = EventHotKeyID(signature: OSType("swat".fourCharCodeValue), id: 1)
-        
-        print("Initializing HotkeyManager with hotkey: \(settingsStore.hotkey)")
+        self.hotkeys = [
+            "toggleRecording": settingsStore.recordingHotkey,
+            "showSpotlightChat": settingsStore.spotlightChatHotkey
+        ]
         
         HotkeyManager.sharedInstance = self
         
-        // Observe changes in SettingsStore
-        settingsStore.$hotkey.assign(to: &$currentHotkey)
+        // Install event handler once during initialization
+        installEventHandler()
         
-        updateHotkey()
+        // Observe changes in SettingsStore
+        settingsStore.$recordingHotkey
+            .sink { [weak self] newValue in
+                self?.hotkeys["toggleRecording"] = newValue
+            }
+            .store(in: &cancellables)
+        
+        settingsStore.$spotlightChatHotkey
+            .sink { [weak self] newValue in
+                self?.hotkeys["showSpotlightChat"] = newValue
+            }
+            .store(in: &cancellables)
+        
+        updateHotkeys()
     }
     
-    private func updateHotkey() {
-        print("Updating hotkey...")
-        unregisterHotkey()
-        registerHotkey()
+    private func installEventHandler() {
+        var eventType = EventTypeSpec(eventClass: OSType(kEventClassKeyboard), eventKind: OSType(kEventHotKeyPressed))
+        let status = InstallEventHandler(GetApplicationEventTarget(), Self.eventHandler, 1, &eventType, nil, nil)
+        if status == noErr {
+            eventHandlerInstalled = true
+            print("Event handler installed successfully")
+        } else {
+            print("Failed to install event handler. Status: \(status)")
+        }
     }
     
-    private func registerHotkey() {
-        let (keyCode, modifiers) = parseHotkeyString(currentHotkey)
+    private func updateHotkeys() {
+        print("Updating hotkeys...")
+        unregisterAllHotkeys()
+        registerAllHotkeys()
+    }
+    
+    private func registerAllHotkeys() {
+        for (action, hotkeyString) in hotkeys {
+            registerHotkey(for: action, hotkeyString: hotkeyString)
+        }
+    }
+    
+    private func registerHotkey(for action: String, hotkeyString: String) {
+        let (keyCode, modifiers) = parseHotkeyString(hotkeyString)
         let modifierFlags = getCarbonFlagsFromCocoaFlags(cocoaFlags: modifiers)
         
-        print("Registering hotkey with keyCode: \(keyCode), modifiers: \(modifiers)")
+        print("Registering hotkey for \(action) with keyCode: \(keyCode), modifiers: \(modifiers)")
         
-        var eventType = EventTypeSpec(eventClass: OSType(kEventClassKeyboard), eventKind: OSType(kEventHotKeyPressed))
+        // Create a unique identifier for this hotkey
+        let signatureHash = abs(action.hashValue) & 0xFFFFFFFF
+        let hotKeyID = EventHotKeyID(signature: OSType(signatureHash), id: UInt32(hotKeyIDs.count + 1))
+        hotKeyIDs[action] = hotKeyID
         
-        // Use a static function as the event handler
-        let status = InstallEventHandler(GetApplicationEventTarget(), Self.eventHandler, 1, &eventType, nil, nil)
-        if status != noErr {
-            print("Failed to install event handler. Status: \(status)")
-            return
-        }
-        
+        var hotKeyRef: EventHotKeyRef?
         let registerStatus = RegisterEventHotKey(UInt32(keyCode),
                                                  modifierFlags,
                                                  hotKeyID,
@@ -73,52 +105,76 @@ class HotkeyManager: ObservableObject {
                                                  0,
                                                  &hotKeyRef)
         
-        if registerStatus == noErr {
-            print("Hotkey registered successfully")
+        if registerStatus == noErr, let hotKeyRef = hotKeyRef {
+            hotKeyRefs[action] = hotKeyRef
+            print("Hotkey for \(action) registered successfully")
         } else {
-            print("Failed to register hotkey. Status: \(registerStatus)")
+            print("Failed to register hotkey for \(action). Status: \(registerStatus)")
         }
     }
     
-    private func unregisterHotkey() {
-        if let hotKeyRef = hotKeyRef {
-            print("Unregistering previous hotkey")
+    private func unregisterAllHotkeys() {
+        for (action, hotKeyRef) in hotKeyRefs {
+            print("Unregistering hotkey for \(action)")
             UnregisterEventHotKey(hotKeyRef)
-            self.hotKeyRef = nil
         }
+        hotKeyRefs.removeAll()
+        hotKeyIDs.removeAll()
     }
     
     private static let eventHandler: EventHandlerUPP = { (nextHandler, eventRef, userData) -> OSStatus in
         guard let eventRef = eventRef else { return noErr }
-        print("Hotkey event received")
-        DispatchQueue.main.async {
-            HotkeyManager.sharedInstance?.delegate?.hotkeyTriggered()
-        }
-        return noErr
-    }
-    
-    private func parseHotkeyString(_ hotkeyString: String) -> (keyCode: UInt16, modifiers: NSEvent.ModifierFlags) {
-        let components = hotkeyString.components(separatedBy: "+")
-        var modifiers: NSEvent.ModifierFlags = []
-        var keyCode: UInt16 = 0
         
-        for component in components {
-            switch component.lowercased() {
-            case "cmd", "command":
-                modifiers.insert(.command)
-            case "ctrl", "control":
-                modifiers.insert(.control)
-            case "alt", "option":
-                modifiers.insert(.option)
-            case "shift":
-                modifiers.insert(.shift)
-            default:
-                keyCode = keyCodeForChar(component)
+        var hotKeyID = EventHotKeyID()
+        let status = GetEventParameter(eventRef, EventParamName(kEventParamDirectObject), EventParamType(typeEventHotKeyID), nil, MemoryLayout<EventHotKeyID>.size, nil, &hotKeyID)
+        
+        if status == noErr {
+            DispatchQueue.main.async {
+                if let action = HotkeyManager.sharedInstance?.hotKeyIDs.first(where: { $0.value.id == hotKeyID.id })?.key {
+                    HotkeyManager.sharedInstance?.delegate?.hotkeyTriggered(for: action)
+                }
             }
         }
         
-        return (keyCode, modifiers)
+        return noErr
     }
+    
+    private func getCarbonFlagsFromCocoaFlags(cocoaFlags: NSEvent.ModifierFlags) -> UInt32 {
+        var carbonFlags: UInt32 = 0
+        if cocoaFlags.contains(.command) { carbonFlags |= UInt32(cmdKey) }
+        if cocoaFlags.contains(.option) { carbonFlags |= UInt32(optionKey) }
+        if cocoaFlags.contains(.control) { carbonFlags |= UInt32(controlKey) }
+        if cocoaFlags.contains(.shift) { carbonFlags |= UInt32(shiftKey) }
+        return carbonFlags
+    }
+    
+    deinit {
+            unregisterAllHotkeys()
+            cancellables.forEach { $0.cancel() }
+        }
+    
+    private func parseHotkeyString(_ hotkeyString: String) -> (keyCode: UInt16, modifiers: NSEvent.ModifierFlags) {
+            let components = hotkeyString.components(separatedBy: "+")
+            var modifiers: NSEvent.ModifierFlags = []
+            var keyCode: UInt16 = 0
+            
+            for component in components {
+                switch component.lowercased() {
+                case "cmd", "command":
+                    modifiers.insert(.command)
+                case "ctrl", "control":
+                    modifiers.insert(.control)
+                case "alt", "option":
+                    modifiers.insert(.option)
+                case "shift":
+                    modifiers.insert(.shift)
+                default:
+                    keyCode = keyCodeForChar(component)
+                }
+            }
+            
+            return (keyCode, modifiers)
+        }
     
     private func keyCodeForChar(_ char: String) -> UInt16 {
         switch char.uppercased() {
@@ -174,16 +230,9 @@ class HotkeyManager: ObservableObject {
         }
     }
     
-    private func getCarbonFlagsFromCocoaFlags(cocoaFlags: NSEvent.ModifierFlags) -> UInt32 {
-        var carbonFlags: UInt32 = 0
-        if cocoaFlags.contains(.command) { carbonFlags |= UInt32(cmdKey) }
-        if cocoaFlags.contains(.option) { carbonFlags |= UInt32(optionKey) }
-        if cocoaFlags.contains(.control) { carbonFlags |= UInt32(controlKey) }
-        if cocoaFlags.contains(.shift) { carbonFlags |= UInt32(shiftKey) }
-        return carbonFlags
-    }
+    
 }
 
 protocol HotkeyManagerDelegate: AnyObject {
-    func hotkeyTriggered()
+    func hotkeyTriggered(for action: String)
 }

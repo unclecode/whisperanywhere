@@ -10,9 +10,9 @@ struct SettingsView: View {
                     Label("Models", systemImage: "cpu")
                 }
             
-            HotkeySettingsView(hotkey: $settingsStore.hotkey)
+            HotkeySettingsView(recordingHotkey: $settingsStore.recordingHotkey, spotlightChatHotkey: $settingsStore.spotlightChatHotkey)
                 .tabItem {
-                    Label("Hotkey", systemImage: "keyboard")
+                    Label("Hotkeys", systemImage: "keyboard")
                 }
             
             BehaviorSettingsView(autoInsert: $settingsStore.autoInsert, showOverlay: $settingsStore.showOverlay, improveGrammar: $settingsStore.improveGrammar)
@@ -20,7 +20,7 @@ struct SettingsView: View {
                     Label("Behavior", systemImage: "gearshape")
                 }
         }
-        .frame(width: 375, height: 250)
+        .frame(width: 375, height: 300)
         .padding()
     }
 }
@@ -53,11 +53,23 @@ struct ModelSettingsView: View {
 }
 
 struct HotkeySettingsView: View {
-    @Binding var hotkey: String
+    @Binding var recordingHotkey: String
+    @Binding var spotlightChatHotkey: String
     
     var body: some View {
         Form {
-            TextField("Hotkey", text: $hotkey)
+            TextField("Recording Hotkey", text: $recordingHotkey)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+            Text("Current recording hotkey: \(recordingHotkey)")
+                .font(.caption)
+                .foregroundColor(.secondary)
+            
+            TextField("Spotlight Chat Hotkey", text: $spotlightChatHotkey)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+            Text("Current Spotlight chat hotkey: \(spotlightChatHotkey)")
+                .font(.caption)
+                .foregroundColor(.secondary)
+            
             Text("Click to record a new hotkey")
                 .font(.caption)
                 .foregroundColor(.secondary)
