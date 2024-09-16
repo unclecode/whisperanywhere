@@ -12,7 +12,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, HotkeyManagerDelegate {
     var settingsWindowController: NSWindowController?
     let settingsStore = SettingsStore()
     var overlayUpdateTimer: Timer?
-    
+    private var logViewerWindow: LogViewerWindow?
     
     @AppStorage("selectedModel") var selectedModel = "Groq"
     @AppStorage("groqAPIKey") var groqAPIKey = ""
@@ -23,6 +23,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, HotkeyManagerDelegate {
     
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        Logger.log("Application did finish launching")
         setupErrorHandling()
         AppDelegateHelpers.checkMicrophoneUsageDescription()
         setupComponents()
@@ -30,12 +31,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, HotkeyManagerDelegate {
     
     private func setupErrorHandling() {
         NSSetUncaughtExceptionHandler { exception in
-            print("Uncaught exception: \(exception)")
-            print("Call stack: \(exception.callStackSymbols)")
+            Logger.log("Uncaught exception: \(exception)")
+            Logger.log("Call stack: \(exception.callStackSymbols)")
         }
     }
     
     private func setupComponents() {
+        Logger.log("Setting up components")
         setupStatusBar()
         setupHotkey()
         setupAudioRecorder()
@@ -46,33 +48,54 @@ class AppDelegate: NSObject, NSApplicationDelegate, HotkeyManagerDelegate {
     
     private func setupStatusBar() {
         statusBarController = StatusBarController()
-        statusBarController?.onPreferencesClicked = { [weak self] in self?.showSettings() }
-        statusBarController?.onStartStopRecording = { [weak self] in self?.toggleRecording() }
+        statusBarController?.onPreferencesClicked = { [weak self] in
+            self?.showSettings()
+        }
+        statusBarController?.onStartStopRecording = { [weak self] in
+            self?.toggleRecording()
+        }
+        
+        // Add this new line to handle the log viewer
+        statusBarController?.showLogWindow = { [weak self] in
+            self?.showLogViewer()
+        }
+        
+        Logger.log("Status bar setup completed")
     }
-    
+
+    // Add this new method to your AppDelegate class
+    private func showLogViewer() {
+        if logViewerWindow == nil {
+            logViewerWindow = LogViewerWindow()
+        }
+        logViewerWindow?.updateLogContent()
+        logViewerWindow?.makeKeyAndOrderFront(nil)
+    }
     private func setupHotkey() {
-            print("Setting up hotkey...")
+            Logger.log("Setting up hotkey...")
             hotkeyManager = HotkeyManager(settingsStore: settingsStore, delegate: self)
         }
     
     
     func hotkeyTriggered() {
-            print("Hotkey triggered, toggling recording")
+            Logger.log("Hotkey triggered, toggling recording")
             toggleRecording()
         }
     
     
     private func setupAudioRecorder() {
-        AVCaptureDevice.requestAccess(for: .audio) { [weak self] granted in
-            DispatchQueue.main.async {
-                if granted {
-                    self?.audioRecorder = AudioRecorder()
-                } else {
-                    AppDelegateHelpers.showMicrophoneAccessDeniedAlert()
+            AVCaptureDevice.requestAccess(for: .audio) { [weak self] granted in
+                DispatchQueue.main.async {
+                    if granted {
+                        Logger.log("Microphone access granted")
+                        self?.audioRecorder = AudioRecorder()
+                    } else {
+                        Logger.log("Microphone access denied")
+                        AppDelegateHelpers.showMicrophoneAccessDeniedAlert()
+                    }
                 }
             }
         }
-    }
     
     private func setupOverlayWindow() {
         overlayWindow = OverlayWindow()
@@ -81,6 +104,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, HotkeyManagerDelegate {
     private func setupGroqAPI() {
         let apiKey = ProcessInfo.processInfo.environment["GROQ_API_KEY"] ?? settingsStore.groqAPIKey
         groqAPI = GroqAPI(apiKey: apiKey)
+        Logger.log("GroqAPI setup completed")
     }
     
     private func startOverlayUpdateTimer() {
@@ -103,56 +127,86 @@ class AppDelegate: NSObject, NSApplicationDelegate, HotkeyManagerDelegate {
     }
     
     private func startRecording() {
-        audioRecorder?.startRecording { [weak self] success in
-            DispatchQueue.main.async {
-                if success {
-                    self?.updateOverlayStatus(.recording)
-                    self?.showOverlayAtMousePosition()
-                } else {
-                    self?.updateOverlayStatus(.error)
+            audioRecorder?.startRecording { [weak self] success in
+                DispatchQueue.main.async {
+                    if success {
+                        Logger.log("Recording started successfully")
+                        self?.updateOverlayStatus(.recording)
+                        self?.showOverlayAtMousePosition()
+                    } else {
+                        Logger.log("Failed to start recording")
+                        self?.updateOverlayStatus(.error)
+                    }
                 }
             }
         }
-    }
     
     private func stopRecording() {
-        audioRecorder?.stopRecording { [weak self] url in
-            DispatchQueue.main.async {
-                if let url = url {
-                    self?.updateOverlayStatus(.processing)
-                    self?.processAudio(url: url)
-                } else {
-                    self?.updateOverlayStatus(.error)
+            audioRecorder?.stopRecording { [weak self] url in
+                DispatchQueue.main.async {
+                    if let url = url {
+                        Logger.log("Recording stopped, processing audio file: \(url.lastPathComponent)")
+                        self?.updateOverlayStatus(.processing)
+                        self?.processAudio(url: url)
+                    } else {
+                        Logger.log("Failed to stop recording or no audio file produced")
+                        self?.updateOverlayStatus(.error)
+                    }
                 }
             }
         }
-    }
     
     private func processAudio(url: URL) {
-        groqAPI?.transcribe(audioFileURL: url) { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let transcription):
-                    self?.handleSuccessfulTranscription(transcription)
-                case .failure(let error):
-                    self?.handleTranscriptionError(error)
+            Logger.log("Processing audio file: \(url.lastPathComponent)")
+            groqAPI?.transcribe(audioFileURL: url, improveGrammar: settingsStore.improveGrammar) { [weak self] result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let transcription):
+                        Logger.log("Transcription successful")
+                        self?.handleSuccessfulTranscription(transcription)
+                    case .failure(let error):
+                        Logger.log("Transcription failed: \(error.localizedDescription)")
+                        self?.handleTranscriptionError(error)
+                    }
                 }
             }
         }
-    }
-    
+        
     private func handleSuccessfulTranscription(_ transcription: String) {
+        Logger.log("Handling successful transcription")
         updateOverlayStatus(.done)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.hideOverlay()
             ClipboardManager.shared.copyToClipboard(transcription)
-            if self.settingsStore.autoInsert && AppDelegateHelpers.checkAccessibilityPermissions() {
-                ClipboardManager.shared.insertText(transcription)
+            if self.settingsStore.autoInsert {
+                if AppDelegateHelpers.checkAccessibilityPermissions() {
+                    Logger.log("Auto-inserting transcription")
+                    ClipboardManager.shared.insertText(transcription)
+                } else {
+                    Logger.log("Accessibility permissions not granted, prompting user")
+                    self.promptForAccessibilityPermissions()
+                }
+            } else {
+                Logger.log("Transcription copied to clipboard")
             }
         }
     }
     
+    private func promptForAccessibilityPermissions() {
+        let alert = NSAlert()
+        alert.messageText = "Accessibility Permissions Required"
+        alert.informativeText = "To auto-insert text, this app needs accessibility permissions. Would you like to open System Preferences to grant these permissions?"
+        alert.alertStyle = .warning
+        alert.addButton(withTitle: "Open System Preferences")
+        alert.addButton(withTitle: "Cancel")
+        
+        if alert.runModal() == .alertFirstButtonReturn {
+            NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility")!)
+        }
+    }
+    
     private func handleTranscriptionError(_ error: Error) {
+        Logger.log("Handling transcription error: \(error.localizedDescription)")
         updateOverlayStatus(.error)
         AppDelegateHelpers.showTranscriptionErrorAlert(error: error)
     }
