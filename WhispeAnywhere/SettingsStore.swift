@@ -16,6 +16,9 @@ class SettingsStore: ObservableObject {
     @Published var showOverlay: Bool {
         didSet { UserDefaults.standard.set(showOverlay, forKey: "showOverlay") }
     }
+    @Published var improveGrammar: Bool {
+        didSet { UserDefaults.standard.set(improveGrammar, forKey: "improveGrammar") }
+    }
     
     init() {
         self.selectedModel = UserDefaults.standard.string(forKey: "selectedModel") ?? "Groq"
@@ -23,5 +26,6 @@ class SettingsStore: ObservableObject {
         self.hotkey = UserDefaults.standard.string(forKey: "hotkey") ?? "Cmd+Shift+K"
         self.autoInsert = UserDefaults.standard.bool(forKey: "autoInsert") || true  // Default to true
         self.showOverlay = UserDefaults.standard.bool(forKey: "showOverlay") || true  // Default to true
+        self.improveGrammar = UserDefaults.standard.bool(forKey: "improveGrammar") || false  // Default to false
     }
 }

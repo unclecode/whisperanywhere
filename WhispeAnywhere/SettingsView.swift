@@ -15,7 +15,7 @@ struct SettingsView: View {
                     Label("Hotkey", systemImage: "keyboard")
                 }
             
-            BehaviorSettingsView(autoInsert: $settingsStore.autoInsert, showOverlay: $settingsStore.showOverlay)
+            BehaviorSettingsView(autoInsert: $settingsStore.autoInsert, showOverlay: $settingsStore.showOverlay, improveGrammar: $settingsStore.improveGrammar)
                 .tabItem {
                     Label("Behavior", systemImage: "gearshape")
                 }
@@ -69,11 +69,13 @@ struct HotkeySettingsView: View {
 struct BehaviorSettingsView: View {
     @Binding var autoInsert: Bool
     @Binding var showOverlay: Bool
+    @Binding var improveGrammar: Bool
     
     var body: some View {
         Form {
             Toggle("Auto-insert transcribed text", isOn: $autoInsert)
             Toggle("Show overlay during recording", isOn: $showOverlay)
+            Toggle("Improve grammar", isOn: $improveGrammar)
         }
         .padding(10)
     }

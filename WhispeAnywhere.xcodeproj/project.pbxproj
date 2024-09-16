@@ -11,6 +11,9 @@
 		E3927F3A2C96C7A500661FEB /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E3927F382C96B3C500661FEB /* Info.plist */; };
 		E3927F3D2C96CC5C00661FEB /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3927F3C2C96CC5C00661FEB /* SettingsStore.swift */; };
 		E3927F3F2C96E11000661FEB /* AppDelegateHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3927F3E2C96E11000661FEB /* AppDelegateHelpers.swift */; };
+		E3927F422C97240200661FEB /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3927F412C97240200661FEB /* Logger.swift */; };
+		E3927F442C97270B00661FEB /* LogViewerWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3927F432C97270B00661FEB /* LogViewerWindow.swift */; };
+		E3927F462C98035F00661FEB /* SpotlightChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3927F452C98035F00661FEB /* SpotlightChatView.swift */; };
 		E3970C632C96A06700E3689D /* WhispeAnywhereApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3970C622C96A06700E3689D /* WhispeAnywhereApp.swift */; };
 		E3970C652C96A06700E3689D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3970C642C96A06700E3689D /* ContentView.swift */; };
 		E3970C672C96A06800E3689D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E3970C662C96A06800E3689D /* Assets.xcassets */; };
@@ -30,6 +33,9 @@
 		E3927F382C96B3C500661FEB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E3927F3C2C96CC5C00661FEB /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
 		E3927F3E2C96E11000661FEB /* AppDelegateHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegateHelpers.swift; sourceTree = "<group>"; };
+		E3927F412C97240200661FEB /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		E3927F432C97270B00661FEB /* LogViewerWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewerWindow.swift; sourceTree = "<group>"; };
+		E3927F452C98035F00661FEB /* SpotlightChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightChatView.swift; sourceTree = "<group>"; };
 		E3970C5F2C96A06700E3689D /* WhispeAnywhere.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhispeAnywhere.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3970C622C96A06700E3689D /* WhispeAnywhereApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhispeAnywhereApp.swift; sourceTree = "<group>"; };
 		E3970C642C96A06700E3689D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -102,6 +108,9 @@
 				E3927F382C96B3C500661FEB /* Info.plist */,
 				E3927F3C2C96CC5C00661FEB /* SettingsStore.swift */,
 				E3927F3E2C96E11000661FEB /* AppDelegateHelpers.swift */,
+				E3927F412C97240200661FEB /* Logger.swift */,
+				E3927F432C97270B00661FEB /* LogViewerWindow.swift */,
+				E3927F452C98035F00661FEB /* SpotlightChatView.swift */,
 			);
 			path = WhispeAnywhere;
 			sourceTree = "<group>";
@@ -189,11 +198,14 @@
 				E3970C782C96A11800E3689D /* AudioRecorder.swift in Sources */,
 				E3927F3F2C96E11000661FEB /* AppDelegateHelpers.swift in Sources */,
 				E3970C7A2C96A12100E3689D /* OverlayWindow.swift in Sources */,
+				E3927F442C97270B00661FEB /* LogViewerWindow.swift in Sources */,
 				E3970C7E2C96A13700E3689D /* GroqAPI.swift in Sources */,
 				E3970C762C96A10F00E3689D /* SettingsView.swift in Sources */,
 				E3970C652C96A06700E3689D /* ContentView.swift in Sources */,
+				E3927F462C98035F00661FEB /* SpotlightChatView.swift in Sources */,
 				E3970C742C96A10200E3689D /* StatusBarController.swift in Sources */,
 				E3970C7C2C96A12C00E3689D /* HotkeyManager.swift in Sources */,
+				E3927F422C97240200661FEB /* Logger.swift in Sources */,
 				E3970C722C96A0F500E3689D /* AppDelegate.swift in Sources */,
 				E3970C632C96A06700E3689D /* WhispeAnywhereApp.swift in Sources */,
 				E3927F3D2C96CC5C00661FEB /* SettingsStore.swift in Sources */,

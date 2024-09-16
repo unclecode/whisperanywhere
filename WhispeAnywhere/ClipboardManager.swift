@@ -13,9 +13,11 @@ class ClipboardManager {
     
     func insertText(_ text: String) {
         // First, copy the text to clipboard
+        Logger.log("First, copy the text to clipboard")
         copyToClipboard(text)
         
         // Then simulate Command+V to paste
+        Logger.log("Then simulate Command+V to paste")
         let source = CGEventSource(stateID: .hidSystemState)
         
         let cmdDown = CGEvent(keyboardEventSource: source, virtualKey: 0x37, keyDown: true)
@@ -31,5 +33,6 @@ class ClipboardManager {
         vDown?.post(tap: .cgAnnotatedSessionEventTap)
         vUp?.post(tap: .cgAnnotatedSessionEventTap)
         cmdUp?.post(tap: .cgAnnotatedSessionEventTap)
+        Logger.log("Donw with paste")
     }
 }
