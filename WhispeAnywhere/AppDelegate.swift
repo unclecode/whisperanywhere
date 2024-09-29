@@ -102,8 +102,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, HotkeyManagerDelegate {
            spotlightChatWindow?.contentView = NSHostingView(rootView: contentView)
            spotlightChatWindow?.isReleasedWhenClosed = false
            spotlightChatWindow?.level = .floating
+        
+//           spotlightChatWindow?.makeKeyAndOrderFront(nil)
+//           spotlightChatWindow?.standardWindowButton(.closeButton)?.target = self
+//           spotlightChatWindow?.standardWindowButton(.closeButton)?.action = #selector(closeSpotlightChat)
         }
         
+    @objc private func closeSpotlightChat() {
+        toggleSpotlightChat()
+    }
+    
     private func toggleSpotlightChat() {
         if isSpotlightChatVisible {
             spotlightChatWindow?.close()
@@ -113,10 +121,31 @@ class AppDelegate: NSObject, NSApplicationDelegate, HotkeyManagerDelegate {
             NSApp.activate(ignoringOtherApps: true)
             
             // Make sure the window and content get focus
-            spotlightChatWindow?.makeFirstResponder(spotlightChatWindow?.contentView)
+//            spotlightChatWindow?.makeFirstResponder(spotlightChatWindow?.contentView)
             
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                if let textView = self.findTextView(in: self.spotlightChatWindow?.contentView) {
+                    self.spotlightChatWindow?.makeFirstResponder(textView)
+                    Logger.log("Focus set on text input")
+                } else {
+                    Logger.log("Failed to find text input for focus")
+                }
+            }
+
             isSpotlightChatVisible = true
         }
+    }
+    
+    private func findTextView(in view: NSView?) -> NSTextView? {
+        if let textView = view as? NSTextView {
+            return textView
+        }
+        for subview in view?.subviews ?? [] {
+            if let textView = findTextView(in: subview) {
+                return textView
+            }
+        }
+        return nil
     }
     
     private func setupHotkey() {
@@ -129,11 +158,20 @@ class AppDelegate: NSObject, NSApplicationDelegate, HotkeyManagerDelegate {
                 toggleRecording()
             case "showSpotlightChat":
                 toggleSpotlightChat()
+            case "escape":
+                handleEscapeKey()
             default:
                 break
             }
         }
     
+    private func handleEscapeKey() {
+            if isSpotlightChatVisible {
+                toggleSpotlightChat()
+            } else if let audioRecorder = audioRecorder, audioRecorder.isRecording {
+                stopRecordingAndHideOverlay()
+            }
+        }
     
     private func setupAudioRecorder() {
             AVCaptureDevice.requestAccess(for: .audio) { [weak self] granted in
@@ -204,6 +242,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, HotkeyManagerDelegate {
                         Logger.log("Failed to stop recording or no audio file produced")
                         self?.updateOverlayStatus(.error)
                     }
+                }
+            }
+        }
+    
+    private func stopRecordingAndHideOverlay() {
+            audioRecorder?.stopRecording { _ in
+                DispatchQueue.main.async {
+                    self.hideOverlay()
+                    Logger.log("Recording stopped and overlay hidden due to escape key")
                 }
             }
         }

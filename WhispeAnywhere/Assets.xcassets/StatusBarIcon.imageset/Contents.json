@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "tray-icon-16.png",
+      "filename" : "microphone (1).svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "tray-icon-24.png",
+      "filename" : "microphone (2).svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "tray-icon-32.png",
+      "filename" : "microphone (3).svg",
       "idiom" : "universal",
       "scale" : "3x"
     }

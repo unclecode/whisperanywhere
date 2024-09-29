@@ -39,7 +39,8 @@ class HotkeyManager: ObservableObject {
         self.delegate = delegate
         self.hotkeys = [
             "toggleRecording": settingsStore.recordingHotkey,
-            "showSpotlightChat": settingsStore.spotlightChatHotkey
+            "showSpotlightChat": settingsStore.spotlightChatHotkey,
+            "escape": "Escape"
         ]
         
         HotkeyManager.sharedInstance = self
@@ -226,6 +227,7 @@ class HotkeyManager: ObservableObject {
         case ".": return UInt16(kVK_ANSI_Period)
         case "`": return UInt16(kVK_ANSI_Grave)
         case "Space": return UInt16(kVK_Space)
+        case "ESCAPE": return UInt16(kVK_Escape)
         default: return 0
         }
     }

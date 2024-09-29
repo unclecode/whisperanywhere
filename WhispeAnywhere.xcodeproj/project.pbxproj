@@ -37,6 +37,7 @@
 		E3927F412C97240200661FEB /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		E3927F432C97270B00661FEB /* LogViewerWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewerWindow.swift; sourceTree = "<group>"; };
 		E3927F452C98035F00661FEB /* SpotlightChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightChatView.swift; sourceTree = "<group>"; };
+		E3927F4A2CA5518C00661FEB /* todos.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = todos.md; sourceTree = "<group>"; };
 		E3970C5F2C96A06700E3689D /* WhispeAnywhere.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhispeAnywhere.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3970C622C96A06700E3689D /* WhispeAnywhereApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhispeAnywhereApp.swift; sourceTree = "<group>"; };
 		E3970C642C96A06700E3689D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -113,6 +114,7 @@
 				E3927F412C97240200661FEB /* Logger.swift */,
 				E3927F432C97270B00661FEB /* LogViewerWindow.swift */,
 				E3927F452C98035F00661FEB /* SpotlightChatView.swift */,
+				E3927F4A2CA5518C00661FEB /* todos.md */,
 			);
 			path = WhispeAnywhere;
 			sourceTree = "<group>";
@@ -356,12 +358,13 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = /Users/unclecode/devs/whisperanywhere/WhispeAnywhere/WhispeAnywhere/info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Whisper Anywhere";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.unclecode.WhispeAnywhere;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -385,12 +388,13 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = /Users/unclecode/devs/whisperanywhere/WhispeAnywhere/WhispeAnywhere/info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Whisper Anywhere";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.unclecode.WhispeAnywhere;
 				PRODUCT_NAME = "$(TARGET_NAME)";
