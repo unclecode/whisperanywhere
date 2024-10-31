@@ -38,6 +38,7 @@
 		E3927F432C97270B00661FEB /* LogViewerWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewerWindow.swift; sourceTree = "<group>"; };
 		E3927F452C98035F00661FEB /* SpotlightChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightChatView.swift; sourceTree = "<group>"; };
 		E3927F4A2CA5518C00661FEB /* todos.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = todos.md; sourceTree = "<group>"; };
+		E3927F4B2CD381E100661FEB /* open_terminal.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = open_terminal.sh; sourceTree = "<group>"; };
 		E3970C5F2C96A06700E3689D /* WhispeAnywhere.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhispeAnywhere.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3970C622C96A06700E3689D /* WhispeAnywhereApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhispeAnywhereApp.swift; sourceTree = "<group>"; };
 		E3970C642C96A06700E3689D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -115,6 +116,7 @@
 				E3927F432C97270B00661FEB /* LogViewerWindow.swift */,
 				E3927F452C98035F00661FEB /* SpotlightChatView.swift */,
 				E3927F4A2CA5518C00661FEB /* todos.md */,
+				E3927F4B2CD381E100661FEB /* open_terminal.sh */,
 			);
 			path = WhispeAnywhere;
 			sourceTree = "<group>";
